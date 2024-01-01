@@ -18,6 +18,7 @@ const Home = () => {
 
     return (
         <div>
+            <h1>This is the Home Page</h1>
             <Searchbar onSearch={basicSearch} onAdvancedSearch={advancedSearch} onLastSearch={lastSearch}/>
         </div>
     );
