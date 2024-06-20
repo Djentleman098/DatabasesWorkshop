@@ -7,16 +7,25 @@ const corsOptions ={
     optionSuccessStatus:200
 }
 const db  = require('./dbConfig');
-const query = require('./routes/queryRoute');
-// more routes
+const retrieveTable = require('./routes/retrieveTableRoute');
+const insertFile = require('./routes/insertFileRoute');
+const searchText = require('./routes/searchTextRoute');
+const getText = require('./routes/getTextRoute');
+const getWords = require('./routes/getWordsRoute');
+// ...more routes
 
 //Initialize db connection pool
 db.initializeDatabase();
 
 app.use(cors(corsOptions));
+app.use(express.json());
 //Use routes to handle backend actions
-app.use('/api', query);
-// more routes
+app.use('/api', retrieveTable);
+app.use('/api', insertFile);
+app.use('/api', searchText);
+app.use('/api', getText);
+app.use('/api', getWords);
+// ...more routes
 
 //Close db connection pool
 process.on('SIGINT', async () => {

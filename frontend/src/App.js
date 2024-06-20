@@ -17,7 +17,7 @@ function App() {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/Home" exact element={<Home />} />
+          <Route path="/" exact element={<Home />} />
           <Route path="/Upload" element={<Upload />} />
           <Route path="/Groups" element={<Groups />} />
           <Route path="/Data_Mining" element={<Data_Mining />} />

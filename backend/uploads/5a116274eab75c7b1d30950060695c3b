@@ -1,0 +1,8 @@
+lists_ab.exe: lists_ab.o lists_ab_functions.o
+	gcc -Wall -ansi -pedantic -o lists_ab lists_ab.o lists_ab_functions.o
+	
+lists_ab.o: lists_ab.c
+	gcc -Wall -ansi -pedantic -c lists_ab.c -o lists_ab.o
+
+lists_ab_functions.o: lists_ab_functions.c
+	gcc -Wall -ansi -pedantic -c lists_ab_functions.c -o lists_ab_functions.o
