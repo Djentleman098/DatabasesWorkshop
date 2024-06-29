@@ -5,7 +5,7 @@ const path = require('path');
 exports.fetchSearchText = async (variable, text) => {
     let connection;
     let filePath = null;
-    let fileRead, queryExecute, curKey = 'TEXT_ID', curValues = [];
+    let fileRead, queryExecute, curKey = 'TEXT_ID', curValues = new Set();
     let result = {};
 
     try {
@@ -20,7 +20,7 @@ exports.fetchSearchText = async (variable, text) => {
             queryExecute = await connection.execute(fileRead);
             colNames = queryExecute.metaData.map(col => col.name);
             for (let j = 0; j < queryExecute.rows.length; j++) {
-                curValues.push(queryExecute.rows[j]);
+                curValues.add(queryExecute.rows[j][0]);
             }
         };
         if (variable === 'Metadata' || variable === 'All') {
@@ -31,21 +31,34 @@ exports.fetchSearchText = async (variable, text) => {
             queryExecute = await connection.execute(fileRead);
             colNames = queryExecute.metaData.map(col => col.name);
             for (let j = 0; j < queryExecute.rows.length; j++) {
-                curValues.push(queryExecute.rows[j]);
+                curValues.add(queryExecute.rows[j][0]);
             }
         };
+        //fetch all the texts in the db
         if (variable === 'Full') {
-            // search in metadata
             filePath = path.join(__dirname, '../queries/fetchAllTexts.sql');
             fileRead = await fs.readFile(filePath, 'utf-8');
             queryExecute = await connection.execute(fileRead);
             colNames = queryExecute.metaData.map(col => col.name);
             for (let j = 0; j < queryExecute.rows.length; j++) {
-                curValues.push(queryExecute.rows[j]);
+                curValues.add(queryExecute.rows[j][0]);
+            }
+        };
+        // search using indexes - row and column or paragraph and line
+        if (variable === 'R&C' || variable === 'P&L'){
+            variable === 'R&C' ? filePath = path.join(__dirname, '../queries/rowColumnSearch.sql')
+            : filePath = path.join(__dirname, '../queries/paragraphLineSearch.sql');
+            fileRead = await fs.readFile(filePath, 'utf-8');
+            fileRead = fileRead.replace(':varX', text.x);
+            fileRead = fileRead.replace(':varY', text.y);
+            queryExecute = await connection.execute(fileRead);
+            colNames = queryExecute.metaData.map(col => col.name);
+            for (let j = 0; j < queryExecute.rows.length; j++) {
+                curValues.add(queryExecute.rows[j][0]);
             }
         };
 
-        result[curKey] = curValues;
+        result.TEXT_ID = Array.from(curValues);
 
         return result;
     } catch (error) {

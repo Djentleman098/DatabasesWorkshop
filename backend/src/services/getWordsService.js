@@ -11,7 +11,6 @@ exports.fetchGetWords = async (textIds) => {
 
         // Flatten the array of text IDs
         const flatIds = textIds.flat();
-        console.log(flatIds);
 
         // Read the SQL query
         const filePath = path.join(__dirname, '../queries/fetchAllWords.sql');
@@ -32,7 +31,10 @@ exports.fetchGetWords = async (textIds) => {
                 TEXT_ID: row[0],
                 WORD: row[1],
                 WORD_ROW: row[2],
-                WORD_COLUMN: row[3]
+                WORD_COLUMN: row[3],
+                WORD_PARAGRAPH: row[4],
+                LINE_NUM: row[5],
+                WORD_LINE_POS: row[6]
             });
         });
 

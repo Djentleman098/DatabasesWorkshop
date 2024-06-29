@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import Text_Component from './Text_Component';
-import { Modal, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import Words_Modal from './Words_Modal';
 import utils from '../../Utils';
 const util = utils();
 
-const Results_Component = ({results, searchLocation, searchValue}) => {
+const Results_Component = ({searchType, results, indexToSearch, searchLocation, searchValue}) => {
 
     // state to handle select all functionallity
     const [selectAll, setSelectAll] = useState(true);
@@ -49,45 +49,27 @@ const Results_Component = ({results, searchLocation, searchValue}) => {
         setIsModalOpen(true);
     };
 
+    // stores the searched expression
+    const handleStoreExpression = () => {
+        util.addGroupElement('Expression', null, searchValue);
+    };
+
     return (
         <div>
+            <label>---------------------------------</label>
+            <br />
             <button onClick={handleViewWords}>View Words</button>
-            <Modal
-            open={isModalOpen}
-            onClose={() => setIsModalOpen(false)}>
-                <Box sx={{height: '80%', width: '80%', position: 'absolute', transform: 'translate(-50%, -50%)', top: '50%', left: '50%', bgcolor: '#525659', color: 'white', overflowY: 'auto'}}>
-                    <TableContainer component={Paper}>
-                        <Table aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Text ID</TableCell>
-                                    <TableCell align="right">Word</TableCell>
-                                    <TableCell align="right">Word Row</TableCell>
-                                    <TableCell align="right">Word Column</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {words.map((row, index) => (
-                                <TableRow key={index}>
-                                    <TableCell component="th" scope="row">
-                                    {row.TEXT_ID}
-                                    </TableCell>
-                                    <TableCell align="right">{row.WORD}</TableCell>
-                                    <TableCell align="right">{row.WORD_ROW}</TableCell>
-                                    <TableCell align="right">{row.WORD_COLUMN}</TableCell>
-                                </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Box>
-            </Modal>
+            <Words_Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} words={words}/>
             <button onClick={handleSelectTexts}>{selectAll ? "Deselect All" : "Select All"}</button>
+            {searchType === 'Text' && (searchLocation === 'All' || searchLocation === 'Texts') && 
+                <div><br/><button onClick={handleStoreExpression}>Store Expression</button></div>}
             {results.map((result) => (
                 <Text_Component 
                 textId={result} 
+                searchType={searchType}
+                indexToSearch={indexToSearch}
                 searchLocation={searchLocation} 
-                searchValue={searchValue} 
+                searchValue={searchValue}
                 selectAll={selectAll}
                 onAddTextId={handleAddTextId}
                 onRemoveTextId={handleRemoveTextId}/>))}

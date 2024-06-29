@@ -16,6 +16,9 @@ exports.fetchRetrieveTable = async (tableName, variable) => {
             case 'MetadataOptions':
                 filePath = path.join(__dirname, '../queries/metadataOptions.sql');
                 break;
+            case 'Expressions':
+                filePath = path.join(__dirname, '../queries/fetchExpressions.sql');
+                break;
             default:
                 console.log('Invalid table name');
                 break;

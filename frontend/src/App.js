@@ -1,28 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import components
-import Navbar from './components/navbar/Navbar';
 import Layout from './components/Layout';
 // import pages
 import Home from './pages/Home';
 import Upload from './pages/Upload';
 import Groups from './pages/Groups';
-import Data_Mining from './pages/Data_Mining';
-import How_To_Use from './pages/How_To_Use';
-import About from './pages/About';
+import XML from './pages/XML';
 
 function App() {
+    // state that saves the search type
+    const [searchType, setSearchType] = useState('Text');
+    // state that saves where to search in the text
+    const [searchInText, setSearchInText] = useState('All');
+    // state that saves the text to search
+    const [textToSearch, setTextToSearch] = useState('');
+    // state to save if a search was activated
+    const [search, setSearch] = useState(false);
+    // state to save if a search was activated
+    const [updateSearch, setUpdateSearch] = useState(false);
+
   return (
     // define the router to control the navbar navigation
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" exact element={<Home />} />
+          <Route path="/" element={<Home searchType={searchType} setSearchType={setSearchType} searchInText={searchInText} setSearchInText={setSearchInText} textToSearch={textToSearch} setTextToSearch={setTextToSearch} search={search} setSearch={setSearch} updateSearch={updateSearch}/>} />
           <Route path="/Upload" element={<Upload />} />
-          <Route path="/Groups" element={<Groups />} />
-          <Route path="/Data_Mining" element={<Data_Mining />} />
-          <Route path="/How_To_Use" element={<How_To_Use />} />
-          <Route path="/About" element={<About />} />
+          <Route path="/Groups" element={<Groups setSearchType={setSearchType} setSearchInText={setSearchInText} setTextToSearch={setTextToSearch} setSearch={setSearch} setUpdateSearch={setUpdateSearch} updateSearch={updateSearch}/>} />
+          <Route path="/XML" element={<XML />} />
         </Routes>
       </Layout>
     </Router>
