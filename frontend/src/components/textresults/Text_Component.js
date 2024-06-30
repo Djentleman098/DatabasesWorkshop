@@ -45,7 +45,6 @@ const Text_Component = ({textId, searchType, indexToSearch, searchLocation, sear
     
     return (
         <div>
-            <p>Results:</p>
             {textData !== null &&
             <div className="text-container">
                 <input type="checkbox" id={textId} checked={viewWords} onChange={() => handleCheckboxChange(textId)} />

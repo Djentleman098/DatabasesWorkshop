@@ -51,6 +51,10 @@ const Results_Component = ({searchType, results, indexToSearch, searchLocation, 
 
     // stores the searched expression
     const handleStoreExpression = () => {
+        if (searchValue === ''){
+            alert('Cant add Empty Expression');
+            return;
+        }
         util.addGroupElement('Expression', null, searchValue);
     };
 
